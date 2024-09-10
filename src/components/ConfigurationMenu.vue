@@ -4,7 +4,8 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/metaConfiguration">Gestion des meta descriptions</router-link></li>
                 <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/metaMotsCles">Gestion des mots clés</router-link></li>
-                <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><a class="nav-link" href="">Gestion des footers</a></li>
+                <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/footerConfiguration">Gestion des footers</router-link></li>
+                <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/langueConfiguration">Gestion des langues</router-link></li>
             </ul>
         </div>
     </div>

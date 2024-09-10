@@ -13,17 +13,10 @@
                             <router-link class="nav-link" to="/metaConfiguration">Configuration</router-link>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="information" data-bs-toggle="dropdown" aria-expanded="false">Information documents</a>
-                            <ul class="dropdown-menu" aria-labelledby="information">
-                                <li><a class="dropdown-item" href="#">Introduction rédaction</a></li>
-                                <li><a class="dropdown-item" href="#">Authentification rédaction</a></li>
-                                <li><a class="dropdown-item" href="#">Environnement</a></li>
-                                <li><a class="dropdown-item" href="#">First Step</a></li>
-                                <li><a class="dropdown-item" href="#">Erreur de code</a></li>
-                            </ul>
+                            <router-link class="nav-link" to="/information_managment">Information documents</router-link>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link me-2" href="#">Endpoints</a>
+                            <router-link class="nav-link me-2" to="/endpoints_introduction">Endpoints</router-link>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle mb-2 fw-bold" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
