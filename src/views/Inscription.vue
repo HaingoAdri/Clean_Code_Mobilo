@@ -1,53 +1,72 @@
 <template>
-<div class="container wrapper p-5">
+  <div class="container wrapper p-5">
     <div class="wrapper card py-5" style="width:600px;">
-        <div class="card-body">
-            <h1>Mobilosoft API DOCS Configuration</h1>
-            <h3>Inscrivez vous en tant qu'admin.</h3>
-            <form action="/dashboard">
-                    <label for="first">
-                        Nom complet:
-                    </label>
-                    <input type="text" 
-                            id="first" 
-                            name="nom" 
-                            placeholder="Entrer votre Nom complet" required>
-                    <label for="first">
-                        Email:
-                    </label>
-                    <input type="text" 
-                            id="first" 
-                            name="email" 
-                            placeholder="Entrer votre Email" required>
+      <div class="card-body">
+        <h1>Mobilosoft API DOCS Configuration</h1>
+        <h3>Inscrivez-vous en tant qu'admin.</h3>
+        <form @submit.prevent="handleSubmit">
+          <label for="nom">Nom complet:</label>
+          <input type="text" 
+                 id="nom" 
+                 v-model="form.nom" 
+                 placeholder="Entrer votre Nom complet" 
+                 required>
+          
+          <label for="email">Email:</label>
+          <input type="email" 
+                 id="email" 
+                 v-model="form.email" 
+                 placeholder="Entrer votre Email" 
+                 required>
 
-                    <label for="password">
-                        Mot de passe:
-                    </label>
-                    <input type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Entrer votre Mot de passe" required>
+          <label for="password">Mot de passe:</label>
+          <input type="password"
+                 id="password"
+                 v-model="form.mot_de_passe"
+                 placeholder="Entrer votre Mot de passe" 
+                 required>
 
-                    <div class="wrap">
-                        <button type="submit">
-                                Créer mon compte
-                        </button>
-                    </div>
-            </form>
-            <p>Déjà inscris?
-                    <router-link :to="{name : 'LoginConnexion'}"
-                        style="text-decoration: none;">
-                        Se connecter.
-                    </router-link>
-            </p>
-        </div>
+          <div class="wrap">
+            <button type="submit">
+              Créer mon compte
+            </button>
+          </div>
+        </form>
+        <p>Déjà inscrit?
+          <router-link :to="{ name: 'LoginConnexion' }" style="text-decoration: none;">
+            Se connecter.
+          </router-link>
+        </p>
+      </div>
     </div>
-</div>
+  </div>
 </template>
+
 <script>
+import { postData } from '../service/apiService';
+
 export default {
-    name:'InscriptionRegister'
-}
+  name: 'InscriptionRegister',
+  data() {
+    return {
+      form: {
+        nom: '',
+        email: '',
+        mot_de_passe: ''
+      }
+    };
+  },
+  methods: {
+    async handleSubmit() {
+      try {
+        await postData('/inscription_utilisateur', this.form);
+        this.$router.push('/dashboard');
+      } catch (error) {
+        console.error('Erreur lors de l\'inscription:', error);
+      }
+    }
+  }
+};
 </script>
 <style scoped>
 

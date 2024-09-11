@@ -23,78 +23,81 @@ const routes = [
     },
     {
         path: '/s-inscrire',
-        name:'InscriptionRegister',
+        name: 'InscriptionRegister',
         component: InscriptionRegister,
         meta: { title: 'Inscription' }
     },
     {
-        path:'/dashboard',
-        name:'DashBoard',
+        path: '/dashboard',
+        name: 'DashBoard',
         component: DashBoard,
-        meta: { title: 'DashBoard' }
+        meta: { title: 'DashBoard', requiresAuth: true }
     },
     {
-        path:'/metaConfiguration',
-        name:'metaConfiguration',
-        component:ConfigurationMeta,
-        meta: { title: 'Configuration description meta' }
-    },{
-        path:'/metaMotsCles',
-        name:'Mots_cles',
+        path: '/metaConfiguration',
+        name: 'metaConfiguration',
+        component: ConfigurationMeta,
+        meta: { title: 'Configuration description meta', requiresAuth: true }
+    },
+    {
+        path: '/metaMotsCles',
+        name: 'Mots_cles',
         component: ConfigurationMotsCles,
-        meta: { title: 'Configuration mots cles'}
-    },{
+        meta: { title: 'Configuration mots cles', requiresAuth: true }
+    },
+    {
         path: '/footerConfiguration',
-        name:'footerConfiguration',
+        name: 'footerConfiguration',
         component: ConfigurationFooter,
-        meta: { title: 'Configuration du footer'}
-    },{
+        meta: { title: 'Configuration du footer', requiresAuth: true }
+    },
+    {
         path: '/langueConfiguration',
-        name:'langueConfiguration',
+        name: 'langueConfiguration',
         component: ConfigurationLangue,
-        meta: { title: 'Configuration de langue' }
+        meta: { title: 'Configuration de langue', requiresAuth: true }
     },
     {
         path: '/information_managment',
-        name:'informationManagment',
+        name: 'informationManagment',
         component: Information_managment,
-        meta: { title: 'Information editeur'}
+        meta: { title: 'Information editeur', requiresAuth: true }
     },
     {
         path: '/resultat_information',
         name: 'Resultats_managment',
         component: Resultats_managment,
-        meta: { title: 'Resultat des informations'}
+        meta: { title: 'Resultat des informations', requiresAuth: true }
     },
     {
         path: '/endpoints_introduction',
         name: 'Endpoints_introduction',
         component: Endpoints_introduction,
-        meta: { title: 'Introduction endpoints'}
+        meta: { title: 'Introduction endpoints', requiresAuth: true }
     },
     {
         path: '/endpoints_Categorie',
         name: 'Endpoints_Categorie',
         component: Endpoints_Categorie,
-        meta: { title: 'Categorie endpoints'}
+        meta: { title: 'Categorie endpoints', requiresAuth: true }
     },
     {
         path: '/Sous_Categorie',
         name: 'Sous_Categorie',
         component: Sous_Categorie,
-        meta: { title: 'Sous categorie endpoints'}
+        meta: { title: 'Sous categorie endpoints', requiresAuth: true }
     },
     {
         path: '/Header_vue',
         name: 'Header_vue',
         component: Header_vue,
-        meta: { title: 'Query endpoints'}
+        meta: { title: 'Query endpoints', requiresAuth: true }
     },
     {
         path: '/Body_vue',
         name: 'Body_vue',
         component: Body_vue,
-        meta: { title: 'Body endpoints'}
+        meta: { title: 'Body endpoints', requiresAuth: true }
     }
 ];
 
@@ -104,9 +107,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const defaultTitle = 'Mobilosoft api configuration';
+    const defaultTitle = 'Mobilosoft API Configuration';
     document.title = to.meta.title || defaultTitle;
-    next();
-  });
+
+    const isAuthenticated = !!localStorage.getItem('user'); // Vérifie si l'utilisateur est connecté
+    if (to.meta.requiresAuth && !isAuthenticated) {
+        // Si la route nécessite une authentification et l'utilisateur n'est pas authentifié, rediriger vers la page de connexion
+        next('/');
+    } else {
+        next();
+    }
+});
 
 export default router;

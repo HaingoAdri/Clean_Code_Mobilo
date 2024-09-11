@@ -4,16 +4,16 @@
             <div class="card-body">
                 <h1>Mobilosoft API DOCS Configuration</h1>
                 <h3>Connectez-vous en tant qu'admin.</h3>
-                <form action="" method="post">
+                <form @submit.prevent="handleLogin">
                     <label for="email">
                         Email :
                     </label>
-                    <input type="text" id="email" name="email" placeholder="Entrer votre Email" required>
+                    <input v-model="email" type="text" id="email" placeholder="Entrer votre Email" required>
 
                     <label for="password">
                         Mot de passe :
                     </label>
-                    <input type="password" id="password" name="password" placeholder="Entrer votre Mot de passe" required>
+                    <input v-model="password" type="password" id="password" placeholder="Entrer votre Mot de passe" required>
 
                     <div class="wrap">
                         <button type="submit">
@@ -33,10 +33,43 @@
 </template>
 
 <script>
+import { postData } from '../service/apiService'; // Assurez-vous que le chemin est correct
+
 export default {
-  name: 'LoginConnexion'
+  name: 'LoginConnexion',
+  data() {
+    return {
+      email: '',
+      password: ''
+    };
+  },
+  methods: {
+    async handleLogin() {
+      postData('/login', {
+        email: this.email,
+        password: this.password
+      })
+      .then(response => {
+        console.log(response);
+        localStorage.setItem('user', this.email);
+        this.$router.push('/dashboard');
+      })
+      .catch(error => {
+        if (error.response) {
+          window.alert(`Erreur ${error.response.status} : ${error.response.data || 'Erreur inconnue'}`);
+        } else {
+          window.alert(`Une erreur est survenue : ${error.message || 'Erreur inconnue'}`);
+        }
+      });
+    }
+  }
 }
 </script>
+
+<style scoped>
+/* Style déjà fourni */
+</style>
+
 
 <style scoped>
 
