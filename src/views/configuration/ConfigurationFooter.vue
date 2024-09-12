@@ -12,14 +12,14 @@
                     <div class="card-body">
                         <h3>Gerer la gestion des footers ici.</h3>
                         <hr>
-                        <form class="row g-3">
+                        <form class="row g-3" @submit.prevent="saveFooter">
                             <div class="col-12">
                                 <label for="inputAddress2" class="form-label">Footer details :</label>
-                                <textarea type="text" class="form-control" id="inputAddress2" placeholder="Exemple: Mobilosoft API Docs."></textarea>
+                                <textarea type="text" v-model="texte" class="form-control" id="inputAddress2" placeholder="Exemple: Mobilosoft API Docs."></textarea>
                             </div>
                             <div class="col-12">
                                 <label for="inputAddress2" class="form-label">Version :</label>
-                                <input type="text" class="form-control" id="inputAddress2" placeholder="Exemple: V.2.3.3"/>
+                                <input type="text" v-model="version" class="form-control" id="inputAddress2" placeholder="Exemple: V.2.3.3"/>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn">Enregistrer</button>
@@ -34,6 +34,7 @@
     </div>
 </template>
 <script>
+import {postData} from '@/service/apiService';
 import Menu from '@/components/Menu.vue';
 import ConfigurationMenuVue from '@/components/ConfigurationMenu.vue';
 import Footer_vue from '@/components/configuration_reponse/Footer_vue.vue';
@@ -43,6 +44,31 @@ export default {
         ConfigurationMenuVue,
         Menu,
         Footer_vue
+    },
+    data() {
+      return {
+        texte: '',
+        version: '',
+      }
+    },
+    methods: {
+      async saveFooter() {
+        postData('/configuration/save_footer', {
+            texte: this.texte,
+            version: this.version
+        })
+        .then(response => {
+            console.log(response);
+            window.alert('Insertion avec succès');
+        })
+        .catch(error => {
+            if (error.response) {
+                window.alert(`Erreur ${error.response.status} : ${error.response.data || 'Erreur inconnue'}`);
+            } else {
+                window.alert(`Une erreur est survenue : ${error.message || 'Erreur inconnue'}`);
+            }
+        });
+      }
     }
 }
 </script>

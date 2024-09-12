@@ -12,10 +12,10 @@
                     <div class="card-body">
                         <h3>Gerer la gestion des mots cles ici.</h3>
                         <hr>
-                        <form class="row g-3 py-2">
+                        <form class="row g-3 py-2" @submit.prevent="saveConfiguration">
                             <div class="col-12">
                                 <label for="inputAddress2" class="form-label">Mots clés :</label>
-                                <textarea type="text" class="form-control" id="inputAddress2" placeholder="Exemple: Publiez vos informations magasin sur Google, Facebook, Waze, Apple Plan, etc ..., gagnez en visibilité et augmentez la fréquentation de vos points de vente."></textarea>
+                                <textarea type="text" v-model="description" class="form-control" id="inputAddress2" placeholder="Exemple: Publiez vos informations magasin sur Google, Facebook, Waze, Apple Plan, etc ..., gagnez en visibilité et augmentez la fréquentation de vos points de vente."></textarea>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn mt-5">Enregistrer</button>
@@ -26,10 +26,11 @@
             </div>
         </div>
         <br>
-        <Mots_cles/>
+        <Mots_cles :types="types"/>
     </div>
 </template>
 <script>
+import { postData } from '../../service/apiService';
 import Menu from '@/components/Menu.vue';
 import ConfigurationMenuVue from '@/components/ConfigurationMenu.vue';
 import Mots_cles from '@/components/configuration_reponse/Mots_cles.vue';
@@ -39,6 +40,31 @@ export default {
         ConfigurationMenuVue,
         Menu,
         Mots_cles
+    },
+    data() {
+        return {
+            types: 'mots cles',
+            description: '',
+        };
+    },
+    methods: {
+        async saveConfiguration() {
+            postData('/configuration/save_configuration', {
+                types: this.types,
+                description: this.description
+            })
+            .then(response => {
+                console.log(response);
+                window.alert('Insertion avec succès');
+            })
+            .catch(error => {
+                if (error.response) {
+                    window.alert(`Erreur ${error.response.status} : ${error.response.data || 'Erreur inconnue'}`);
+                } else {
+                    window.alert(`Une erreur est survenue : ${error.message || 'Erreur inconnue'}`);
+                }
+            });
+        }
     }
 }
 </script>

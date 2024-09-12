@@ -10,12 +10,12 @@
             <div class="col-8">
                 <div class="card" style="height:300px;">
                     <div class="card-body">
-                        <h3>Gerer la gestion de vos meta description ici.</h3>
+                        <h3>Gérer la gestion de vos meta descriptions ici.</h3>
                         <hr>
-                        <form class="row g-3 py-2">
+                        <form class="row g-3 py-2" @submit.prevent="saveConfiguration">
                             <div class="col-12">
                                 <label for="inputAddress2" class="form-label">Meta description :</label>
-                                <textarea type="text" class="form-control" id="inputAddress2" placeholder="Exemple: Vous pouvez retrouver ici tous les articles relatifs au fonctionnement de la plateforme My.Mobilosoft en français."></textarea>
+                                <textarea type="text" class="form-control" v-model="description" id="inputAddress2" placeholder="Exemple: Vous pouvez retrouver ici tous les articles relatifs au fonctionnement de la plateforme My.Mobilosoft en français."></textarea>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn mt-5">Enregistrer</button>
@@ -26,22 +26,51 @@
             </div>
         </div>
         <br>
-        <Meta_descriptionReponseVue/>
+        <Meta_descriptionReponseVue :types="types" />
     </div>
 </template>
+
 <script>
+import { postData } from '../../service/apiService'; // Assurez-vous que le chemin est correct
 import Menu from '@/components/Menu.vue';
 import ConfigurationMenuVue from '@/components/ConfigurationMenu.vue';
 import Meta_descriptionReponseVue from '@/components/configuration_reponse/Meta_descriptionReponse.vue';
+
 export default {
-    name:'ConfigurationMeta',
+    name: 'ConfigurationMeta',
     components: {
         ConfigurationMenuVue,
         Menu,
         Meta_descriptionReponseVue
+    },
+    data() {
+        return {
+            types: 'meta description',
+            description: '',
+        };
+    },
+    methods: {
+        async saveConfiguration() {
+            postData('/configuration/save_configuration', {
+                types: this.types,
+                description: this.description
+            })
+            .then(response => {
+                console.log(response);
+                window.alert('Insertion avec succès');
+            })
+            .catch(error => {
+                if (error.response) {
+                    window.alert(`Erreur ${error.response.status} : ${error.response.data || 'Erreur inconnue'}`);
+                } else {
+                    window.alert(`Une erreur est survenue : ${error.message || 'Erreur inconnue'}`);
+                }
+            });
+        }
     }
 }
 </script>
+
 <style scoped>
 .custom-container {
   max-width: 1600px;
@@ -78,12 +107,18 @@ export default {
   }
 }
 
-.card{
-    border-radius:15px;
+.card {
+  border-radius: 15px;
 }
-button{
-    border-radius:10px;
-    background-color: #022D7E;
-    color:white;
+
+button {
+  border-radius: 10px;
+  background-color: #022D7E;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #014b9f;
 }
 </style>
