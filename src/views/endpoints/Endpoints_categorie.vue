@@ -12,14 +12,14 @@
                     <div class="card-body">
                         <h3>Information sur les categories d'enpoints ici</h3>
                         <hr>
-                        <form class="row g-3">
+                        <form class="row g-3" @submit.prevent="handleSubmit">
                             <div class="col-12">
                                 <label for="inputAddress2" class="form-label">Categorie :</label>
-                                <input type="text" class="form-control" id="inputAddress2" placeholder="Exemple: User authentification"/>
+                                <input type="text" class="form-control" v-model="categorie" id="inputAddress2" placeholder="Exemple: User authentification"/>
                             </div>
                             <div class="col-12">
                                 <label for="inputAddress2" class="form-label">Description :</label>
-                                <textarea type="text" class="form-control" id="inputAddress2" placeholder="Exemple: FR"></textarea>
+                                <textarea type="text" class="form-control" v-model="description" id="inputAddress2" placeholder="Exemple: FR"></textarea>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn">Enregistrer</button>
@@ -37,12 +37,36 @@
 import MenuVue from '@/components/Menu.vue';
 import Endpoints_menuVue from '@/components/endpoints_menu/Endpoints_menu.vue';
 import Endpoints_categorie_vue from '../../components/endpoints_menu/reponse/Endpoints_categorie_reponse.vue';
+import { postData } from '@/service/apiService';
 export default {
     name: 'Endpoints_categorie',
     components: {
         MenuVue,
         Endpoints_menuVue,
         Endpoints_categorie_vue
+    },
+    data() {
+      return {
+        categorie: '',
+        description: ''
+      }
+    },
+    methods: {
+      async handleSubmit() {
+        const data = {
+          noms: this.categorie,
+          details: this.description
+        };
+
+        try {
+          await postData('/endpoints/save_categorie', data);
+          alert('Catégorie enregistrès avec succès');
+          this.categorie = '';
+          this.description = '';
+        } catch (error) {
+          console.error('Erreur lors de l\'enregistrement des détails:', error);
+        }
+      }
     }
 }
 </script>

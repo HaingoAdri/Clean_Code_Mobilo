@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { fetchData, putData, deleteData } from '@/service/apiService'; // Import des fonctions PUT et DELETE
+import { fetchData, putData, deleteData } from '@/service/apiService';
 import * as bootstrap from 'bootstrap';
 
 export default {
@@ -53,9 +53,9 @@ export default {
     },
     data() {
         return {
-            metaData: null, // Contient l'objet récupéré, incluant l'ID
-            updatedDescription: '', // Préremplir avec la description actuelle pour la mise à jour
-            updateModalInstance: null, // Stocker l'instance du modal Bootstrap
+            metaData: null,
+            updatedDescription: '',
+            updateModalInstance: null,
         };
     },
     mounted() {

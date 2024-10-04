@@ -34,7 +34,7 @@
 import MenuVue from '@/components/Menu.vue';
 import Endpoints_menuVue from '@/components/endpoints_menu/Endpoints_menu.vue';
 import Introduction_reponseVue from '../../components/endpoints_menu/reponse/Introduction_reponse.vue';
-import { postData } from '@/service/apiService';  // Assurez-vous que le chemin est correct
+import { postData } from '@/service/apiService';
 
 export default {
     name: 'Introduction_vue',
@@ -45,22 +45,22 @@ export default {
     },
     data() {
         return {
-            titre: 'endpoints',  // Valeur par défaut pour le nom
-            details: ''  // Liaison de données pour les détails
+            titre: 'endpoints',
+            details: ''
         };
     },
     methods: {
         async handleSubmit() {
             const data = {
-                titre: this.titre,       // Inclure l
-                details: this.details  // Inclure les détails
+                titre: this.titre,
+                details: this.details
             };
 
             try {
-                await postData('/information/save_information', data);  // Modifier l'endpoint si nécessaire
+                await postData('/information/save_information', data);
                 alert('Détails enregistrés avec succès !');
-                this.titre = 'endpoints';  // Réinitialiser le nom après soumission
-                this.details = '';  // Réinitialiser le champ des détails
+                this.titre = 'endpoints';
+                this.details = '';
             } catch (error) {
                 console.error('Erreur lors de l\'enregistrement des détails:', error);
             }
