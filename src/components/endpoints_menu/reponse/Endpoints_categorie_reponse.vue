@@ -12,9 +12,9 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Français</td>
-                            <td>FR</td>
+                        <tr v-for="item in metaData" :key="item.id">
+                            <td>{{ item.nom }}</td>
+                            <td>{{ item.details }}</td>
                             <td>
                                 <button class="btn m-2"><i class="bi bi-pen-fill"></i></button>
                                 <button class="btn"><i class="bi bi-file-earmark-x-fill"></i></button>

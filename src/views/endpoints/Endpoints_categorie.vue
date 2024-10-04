@@ -54,7 +54,7 @@ export default {
     methods: {
       async handleSubmit() {
         const data = {
-          noms: this.categorie,
+          nom: this.categorie,
           details: this.description
         };
 
