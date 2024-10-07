@@ -16,25 +16,57 @@
                             <td>{{ item.nom }}</td>
                             <td>{{ item.details }}</td>
                             <td>
-                                <button class="btn m-2"><i class="bi bi-pen-fill"></i></button>
-                                <button class="btn"><i class="bi bi-file-earmark-x-fill"></i></button>
+                                <!-- Bouton pour la mise à jour -->
+                                <button class="btn m-2" @click="openUpdateModal(item)"><i class="bi bi-pen-fill"></i></button>
+                                <!-- Bouton pour la suppression -->
+                                <button class="btn" @click="handleDelete(item.id)"><i class="bi bi-file-earmark-x-fill"></i></button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </blockquote>
         </div>
+
+        <!-- Modal pour la mise à jour de la description -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Mise à jour de la description</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent="handleUpdate">
+
+                            <div class="col-12">
+                                <label for="inputAddress2" class="form-label">Categorie :</label>
+                                <input type="text" class="form-control" v-model="categorie" id="inputAddress2" placeholder="Exemple: User authentification"/>
+                            </div>
+                            <div class="col-12">
+                                <label for="inputAddress2" class="form-label">Description :</label>
+                                <textarea type="text" class="form-control" v-model="description" id="inputAddress2" placeholder="Exemple: FR"></textarea>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
 <script>
-import { fetchData, putData, deleteData } from '@/service/apiService'; // Import des fonctions PUT et DELETE
+import { fetchData, putData, deleteData } from '@/service/apiService';
 import * as bootstrap from 'bootstrap';
+
 export default {
-    name:'Endpoints_categorie_vue',
+    name: 'Endpoints_categorie_vue',
     data() {
         return {
             metaData: null,
             updatedDescription: '',
+            selectedItem: null,
             updateModalInstance: null,
         };
     },
@@ -47,59 +79,64 @@ export default {
                 const response = await fetchData(`/endpoints/allCategorie`);
                 if (response) {
                     this.metaData = response;
-                    this.updatedDescription = this.metaData.details;
                 }
             } catch (error) {
                 console.error('Erreur lors de la récupération des données:', error);
             }
         },
         
-        openUpdateModal() {
+        openUpdateModal(item) {
+            this.selectedItem = item;
+            this.updatedDescription = item.details;
             const modalElement = document.getElementById('updateModal');
             this.updateModalInstance = new bootstrap.Modal(modalElement);
             this.updateModalInstance.show();
         },
         
         async handleUpdate() {
+            if (!this.selectedItem) return;
             try {
-                const updatedData = {
-                    details: this.updatedDescription
+                const data = {
+                    nom: this.categorie,
+                    details: this.description
                 };
-                await putData(`/information/update_inforamtion/${this.metaData.id}`, updatedData);
+                await putData(`/endpoints/update_categorie/${this.selectedItem.id}`, data);
                 alert('Description mise à jour avec succès !');
-                this.metaData.details = this.updatedDescription; // Mettre à jour localement après la réussite de l'update
-                this.updateModalInstance.hide(); // Fermer le modal après mise à jour
+                
+                this.selectedItem.details = this.updatedDescription;
+                this.updateModalInstance.hide();
             } catch (error) {
                 console.error('Erreur lors de la mise à jour des données:', error);
             }
         },
         
-        // Gestion de la suppression par ID
-        async handleDelete() {
+        async handleDelete(id) {
             if (confirm('Voulez-vous vraiment supprimer cette information ?')) {
                 try {
-                    // Utiliser l'ID pour la suppression
-                    await deleteData(`/information/delete_information/${this.metaData.id}`);
+                    await deleteData(`/endpoints/delete_categorie/${id}`);
                     alert('Données supprimées avec succès !');
-                    this.metaData = null; // Réinitialiser les données après suppression
+                    
+                    // Supprimer l'élément localement après la suppression
+                    this.metaData = this.metaData.filter(item => item.id !== id);
                 } catch (error) {
                     console.error('Erreur lors de la suppression des données:', error);
                 }
             }
         }
     }
-}
+};
 </script>
+
 <style scoped>
-.card{
+.card {
     border-radius: 15px;
 }
-.card-header{
+.card-header {
     background-color: #022D7E;
-    color:white;
+    color: white;
 }
-button{
+button {
     background-color: #28aabb;
-    color:white;
+    color: white;
 }
 </style>

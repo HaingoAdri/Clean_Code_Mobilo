@@ -24,7 +24,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Mon compte</a></li>
-                                <li><a class="dropdown-item" href="#">Deconnexion</a></li>
+                                <li><router-link class="dropdown-item" to="/logout">Deconnexion</router-link></li>
                             </ul>
                         </li>
                     </ul>

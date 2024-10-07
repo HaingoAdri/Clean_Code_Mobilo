@@ -12,13 +12,13 @@
                     <div class="card-body">
                         <h3>Information sur les sous catégories d'enpoints ici</h3>
                         <hr>
-                        <form class="row g-3">
+                        <form class="row g-3" @submit.prevent="handleSubmit">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Categorie</th>
                                         <th>Nom</th>
-                                        <th>Description</th>
+                                        <th>Details</th>
                                         <th>Url</th>
                                         <th>Methode</th>
                                         <th>Actions</th>
@@ -28,21 +28,21 @@
                                     <tr v-for="(ligne, index) in lignes" :key="index">
                                         <td>
                                             <select class="form-control" v-model="ligne.categorie">
-                                                <option value="">Utilisateur authentification</option>
+                                                <option v-for="item in information" :key="item.id" :value="item.id">{{item.nom}}</option>
                                             </select>
                                         </td>
                                         <td>
                                             <input type="text" class="form-control" v-model="ligne.nom" placeholder="Exemple: Connexion user"/>
                                         </td>
                                         <td>
-                                            <textarea type="text" class="form-control" v-model="ligne.description" placeholder="Exemple: FR"></textarea>
+                                            <textarea type="text" class="form-control" v-model="ligne.details" placeholder="Exemple: FR"></textarea>
                                         </td>
                                         <td>
                                             <input type="text" class="form-control" v-model="ligne.url" placeholder="Exemple: /connexion/user"/>
                                         </td>
                                         <td>
                                             <select class="form-control" v-model="ligne.methode">
-                                                <option value="">POST</option>
+                                                <option value="POST">POST</option>
                                             </select>
                                         </td>
                                         <td>
@@ -73,7 +73,7 @@
 import MenuVue from '@/components/Menu.vue';
 import Endpoints_menuVue from '@/components/endpoints_menu/Endpoints_menu.vue';
 import Sous_categorie_vue from '../../components/endpoints_menu/reponse/Sous_categorie_reponse.vue';
-
+import { fetchData, postData } from '@/service/apiService';
 export default {
     name: 'Endpoints_categorie',
     components: {
@@ -84,16 +84,51 @@ export default {
     data() {
         return {
             lignes: [
-                { categorie: '', nom: '', description: '', url: '', methode: '' }
-            ]
+                { categorie: '', nom: '', details: '', url: '', methode: '' }
+            ],
+            information: [],
         };
     },
+    mounted() {
+        this.fetchSearchInformation();
+    },
     methods: {
+        async fetchSearchInformation() {
+            try {
+                const response = await fetchData(`/endpoints/allCategorie`);
+                if (response) {
+                    this.information = response;
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
+            }
+        },
         ajouterLigne() {
-            this.lignes.push({ categorie: '', nom: '', description: '', url: '', methode: '' });
+            this.lignes.push({ categorie: '', nom: '', details: '', url: '', methode: '' });
         },
         supprimerLigne(index) {
             this.lignes.splice(index, 1);
+        },
+        async handleSubmit() {
+            try {
+                for (const ligne of this.lignes) {
+                    const data = {
+                        categorie: ligne.categorie,
+                        nom: ligne.nom,
+                        details: ligne.details,
+                        url: ligne.url,
+                        methode: ligne.methode
+                    };
+
+                    await postData('/sous_categorie/save_Sous_categorie', data);
+                }
+                alert('Sous-catégories enregistrées avec succès');
+                this.lignes = [
+                    { categorie: '', nom: '', details: '', url: '', methode: '' }
+                ];
+            } catch (error) {
+                console.error("Erreur lors de l'enregistrement des sous-catégories:", error);
+            }
         }
     }
 }

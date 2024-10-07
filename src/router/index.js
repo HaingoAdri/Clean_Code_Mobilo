@@ -13,6 +13,7 @@ import Endpoints_Categorie from '../views/endpoints/Endpoints_categorie.vue';
 import Sous_Categorie from '../views/endpoints/Sous_categorie.vue';
 import Header_vue from '../views/endpoints/Header_vue.vue';
 import Body_vue from '../views/endpoints/Body_vue.vue';
+import Code_error_vue from "@/views/endpoints/Code_error_vue.vue";
 
 const routes = [
     {
@@ -98,6 +99,20 @@ const routes = [
         name: 'Body_vue',
         component: Body_vue,
         meta: { title: 'Body endpoints', requiresAuth: true }
+    },
+    {
+        path: '/Error_codes',
+        name: 'Error_codes',
+        component: Code_error_vue,
+        meta: { title: 'Error_codes', requiresAuth: true }
+    },
+    {
+        path: '/logout',
+        name: 'Logout',
+        beforeEnter(to, from, next) {
+            localStorage.clear();
+            next('/');
+        }
     }
 ];
 

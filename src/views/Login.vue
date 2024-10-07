@@ -52,7 +52,7 @@ export default {
       .then(response => {
         console.log(response);
         localStorage.setItem('user', this.email);
-        this.$router.push('/dashboard');
+        this.$router.push('/metaConfiguration');
       })
       .catch(error => {
         if (error.response) {

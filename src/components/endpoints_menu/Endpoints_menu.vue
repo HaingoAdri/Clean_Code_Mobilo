@@ -7,7 +7,7 @@
                 <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/Sous_Categorie">Les sous categories d'endpoints</router-link></li>
                 <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/Header_vue">Les paramètres d'un endpoint</router-link></li>
                 <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/Body_vue">Les corps d'un endpoint</router-link></li>
-                <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/resultat_information">Les erreurs d'un endpoint</router-link></li>
+                <li class="list-group-item list-group-item-primary border-top-0 border-end-0 border-start-0 border-3"><router-link class="nav-link" to="/Error_codes">Les erreurs d'un endpoint</router-link></li>
             </ul>
         </div>
     </div>

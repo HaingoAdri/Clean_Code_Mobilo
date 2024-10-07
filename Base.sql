@@ -65,3 +65,33 @@ create table codes(
     details varchar(15000),
     sous_categorie int references sous_categorie(id)
 );
+
+ALTER TABLE sous_categorie
+DROP CONSTRAINT fk_categorie;
+
+ALTER TABLE sous_categorie
+DROP CONSTRAINT sous_categorie_categorie_fkey;
+
+
+CREATE VIEW view_body AS 
+SELECT 
+    b.id,
+    b.nom, 
+    b.types, 
+    b.details, 
+    sc.nom AS sous_categorie 
+FROM 
+    body AS b 
+JOIN 
+    sous_categorie AS sc ON sc.id = b.sous_categorie;
+
+CREATE VIEW view_codes AS 
+SELECT 
+    c.id, 
+    c.code, 
+    c.details, 
+    sc.nom AS sous_categorie 
+FROM 
+    codes AS c 
+JOIN 
+    sous_categorie AS sc ON sc.id = c.sous_categorie;
